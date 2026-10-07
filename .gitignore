@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Test outputs & MCP test logs
+.playwright-mcp/
+awm_output/
+_pf-ref.html
+pf-ref-render.png
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archives & builds
+*.zip
+*.crx
+dist/

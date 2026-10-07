@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="grayGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9aa2af"/>
+      <stop offset="50%" stop-color="#8b93a1"/>
+      <stop offset="100%" stop-color="#6b7280"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background squircle (inactive state — desaturated brand colors) -->
+  <rect x="16" y="16" width="480" height="480" rx="116" fill="url(#grayGrad)"/>
+
+  <!-- Persian letter "پ" (Pe) — same geometry as the active icon -->
+  <path fill="#ffffff" fill-rule="evenodd" d="
+    M 110 192
+    C 111 236 116 266 132 284
+    C 152 304 200 310 256 310
+    C 312 310 360 304 380 284
+    C 396 266 401 236 402 192
+    L 360 228
+    C 358 242 356 250 348 254
+    C 330 258 300 258 256 258
+    C 212 258 182 258 164 254
+    C 156 250 154 242 152 228
+    Z"/>
+
+  <!-- Three diamond dots of "پ" -->
+  <path fill="#ffffff" d="M 222 352 L 254 384 L 222 416 L 190 384 Z"/>
+  <path fill="#ffffff" d="M 290 352 L 322 384 L 290 416 L 258 384 Z"/>
+  <path fill="#ffffff" d="M 256 418 L 288 450 L 256 482 L 224 450 Z"/>
+</svg>

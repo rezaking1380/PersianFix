@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>PersianFix integration fixture</title>
+<style>
+  .claude-chain { font-family: 'Styrene B', 'Styrene A', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  .icon-chain   { font-family: 'Font Awesome 6 Free', sans-serif; }
+  .tight        { letter-spacing: -3px; }
+  .mono-fallback{ font-family: 'CustomSiteFont', monospace; }
+  #composer     { min-height: 3em; border: 1px solid #ccc; padding: 8px; }
+</style>
+<script>
+  // Chrome-extension API stub so the REAL content scripts run unmodified on a
+  // plain page. digitMode 'persian' exercises the digits path; everything else
+  // uses extension defaults.
+  window.chrome = {
+    runtime: {
+      getURL: (p) => '/' + p,
+      sendMessage: () => {},
+      onMessage: { addListener: () => {} }
+    },
+    storage: {
+      onChanged: { addListener: () => {} },
+      sync: {
+        get: async (schema) => Object.assign({}, schema, { digitMode: 'persian' })
+      },
+      local: { get: async () => ({}) }
+    }
+  };
+</script>
+<!-- Manifest order: lib/detect.js, lib/textfix.js, content.js, editor.js -->
+<script src="../lib/detect.js"></script>
+<script src="../lib/textfix.js"></script>
+<script src="../content.js"></script>
+<script src="../editor.js"></script>
+<!-- Emulates the manifest's content_scripts.css injection (author origin) -->
+<link rel="stylesheet" href="../content.css">
+</head>
+<body>
+  <!-- 80 English-only blocks before any Persian content: the old scan loop
+       never got past ~50 uncached nodes (H2 regression probe). -->
+  <div id="filler"></div>
+  <script>
+    const filler = document.getElementById('filler');
+    for (let i = 0; i < 80; i++) {
+      const d = document.createElement('div');
+      d.className = 'claude-chain';
+      d.textContent = 'English filler block number ' + i;
+      filler.appendChild(d);
+    }
+  </script>
+
+  <!-- H1: claude.ai-like fallback chain, Persian text -> must be styled -->
+  <div id="fa-styled" class="claude-chain">این متن فارسی باید وزیرمتن شود</div>
+
+  <!-- H2: Persian deep in the document, after the 80 fillers -->
+  <div id="deep-fa" class="claude-chain">متن فارسی عمیق در صفحه</div>
+
+  <!-- H3: contenteditable composer -> data-pf-editable, never data-pf-rtl -->
+  <div id="composer" contenteditable="true" class="claude-chain">سلام از داخل ادیتور</div>
+
+  <!-- Protections that must NOT regress -->
+  <pre id="codeblock"><code>این داخل code block است</code></pre>
+  <div id="iconish" class="icon-chain">سلام</div>
+  <div id="monoish" class="mono-fallback">سلام</div>
+
+  <!-- Feature checks -->
+  <div id="tight-fa" class="claude-chain tight">فاصله‌گذاری منفی</div>
+  <div id="dircheck" class="claude-chain">سلام روی en mixed</div>
+
+  <!-- Streaming: text replaced after load (both mutation paths) -->
+  <div id="stream-childlist" class="claude-chain">placeholder one</div>
+  <div id="stream-cdata" class="claude-chain">placeholder two</div>
+  <script>
+    setTimeout(() => {
+      document.getElementById('stream-childlist').textContent = 'متن استریم شده یک';
+      const el = document.getElementById('stream-cdata');
+      el.firstChild.nodeValue = 'متن استریم شده دو';   // pure characterData mutation
+    }, 1200);
+  </script>
+</body>
+</html>

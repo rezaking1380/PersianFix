@@ -1,0 +1,22 @@
+{
+  "name": "persian-fix",
+  "version": "2.0.0",
+  "description": "Chrome extension to improve Persian/Arabic typography on web pages",
+  "scripts": {
+    "test": "node --test"
+  },
+  "author": "Reza ngr (https://github.com/rezaking1380)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rezaking1380/PersianFix.git"
+  },
+  "keywords": [
+    "chrome-extension",
+    "persian",
+    "typography",
+    "vazirmatn",
+    "rtl",
+    "arabic"
+  ]
+}

@@ -1,0 +1,6 @@
+/* PersianFix content styles.
+   Fonts are NOT declared here: content.js registers them via the FontFace API
+   (FontFace + unicode-range). A second @font-face registration from CSS would
+   double-fetch the woff2 files and conflict with the JS faces' dynamic
+   size-adjust (fontScale). Marker attribute rules are constructed at runtime
+   in content.js (updateSheet) and adopted by the document and shadow roots. */

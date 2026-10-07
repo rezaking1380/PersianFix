@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--
+  PersianFix feedback-loop fixture.
+
+  Emulates a claude.ai-like page WITHOUT needing network access:
+    - body font-family chain contains "Segoe UI", Roboto, Arial (H1)
+    - >50 non-Persian nodes precede the Persian content (H2)
+    - a ProseMirror-style contenteditable composer (H3)
+    - a default stack that merely *lists* monospace as a fallback (mono suspect)
+    - a genuine Persian-capable first family (control: must NOT be restyled)
+
+  Loaded as a plain page: `chrome.*` is stubbed so the REAL content.js
+  (unmodified, as shipped) executes in the real DOM.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PersianFix loop fixture</title>
+<link rel="stylesheet" href="../../content.css">
+<script src="../../lib/detect.js"></script>
+<script>
+  // --- instrument requestAnimationFrame BEFORE content.js loads -------------
+  window.__rafCount = 0;
+  const __raf = window.requestAnimationFrame.bind(window);
+  window.requestAnimationFrame = function (cb) { window.__rafCount++; return __raf(cb); };
+
+  // --- minimal chrome.* surface used by content.js --------------------------
+  window.chrome = {
+    storage: {
+      sync: {
+        get(keys, cb) { cb({ masterEnabled: true, digitMode: 'auto', exclusionList: [], siteOverrides: {}, useCustomFont: false }); },
+        set(obj, cb) { if (cb) cb(); }
+      },
+      local: { get(k, cb) { cb({}); } },
+      onChanged: { addListener() {} }
+    },
+    runtime: { getURL() { return 'data:font/woff2;base64,'; } }
+  };
+</script>
+</head>
+<body>
+
+<header id="chrome-ui">New chat</header>
+
+<!-- ---- probes that MUST be reachable inside the first 50 walker nodes ---- -->
+
+<!-- H1: fallback chain lists Segoe UI / Roboto / Arial -->
+<div id="probe-h1" style="font-family: 'Styrene B', Styrene A, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <p>سلام دنیا</p>
+</div>
+
+<!-- control: first family is genuinely Persian-capable -> must stay untouched -->
+<div id="probe-control" style="font-family: 'Vazir', Tahoma, sans-serif;">
+  <p>این نباید تغییر کند</p>
+</div>
+
+<!-- mono suspect: default stack merely *lists* monospace as a fallback -->
+<div id="probe-mono" style="font-family: 'Styrene B', Inter, monospace, sans-serif;">
+  <p>این هم نباید تغییر کند</p>
+</div>
+
+<!-- H3a: contenteditable host holding its Persian text DIRECTLY -->
+<div id="probe-ce-host" contenteditable="true" style="font-family: 'Styrene B', sans-serif;">
+این متن در کمپوزر
+</div>
+
+<!-- H3b: contenteditable host with a nested ProseMirror paragraph -->
+<div id="probe-ce-nested" contenteditable="true" style="font-family: 'Styrene B', sans-serif;">
+  <p id="probe-ce-p">سلام از پاراگراف</p>
+</div>
+
+<!-- H4: Persian only in a descendant, wrapper has no direct text -->
+<div id="probe-wrapper" style="font-family: 'Styrene B', sans-serif;">
+  <div class="inner"><strong>متن تودرتو</strong></div>
+</div>
+
+<!-- ---- >50 non-Persian nodes, so the Persian probe sits past the batch ---- -->
+<div id="noise-root"></div>
+<script>
+  (function () {
+    const root = document.getElementById('noise-root');
+    let html = '';
+    for (let i = 0; i < 80; i++) html += '<div class="noise">English filler paragraph number ' + i + ' with no Persian at all.</div>';
+    root.innerHTML = html;
+  })();
+</script>
+
+<!-- H2: unreachable-because-of-loop probe -->
+<div id="probe-deep" style="font-family: 'Styrene B', sans-serif;">
+  <p id="probe-deep-p">این متن خیلی پایین صفحه است</p>
+</div>
+
+<script src="../../content.js"></script>
+</body>
+</html>

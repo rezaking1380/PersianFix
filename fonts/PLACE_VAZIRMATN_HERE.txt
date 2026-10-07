@@ -1,0 +1,5 @@
+Place Vazirmatn font files here:
+- Vazirmatn-Regular.woff2
+- Vazirmatn-Bold.woff2
+
+Download from: https://github.com/rastikerdar/vazirmatn/releases

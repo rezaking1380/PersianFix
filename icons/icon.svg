@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="50%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background squircle -->
+  <rect x="16" y="16" width="480" height="480" rx="116" fill="url(#primaryGrad)"/>
+
+  <!-- Persian letter "پ" (Pe) — calligraphic bowl, Vazirmatn-inspired:
+       steep shoulders, broad flat bottom, chunky nib-cut tips -->
+  <path fill="#ffffff" fill-rule="evenodd" d="
+    M 110 192
+    C 111 236 116 266 132 284
+    C 152 304 200 310 256 310
+    C 312 310 360 304 380 284
+    C 396 266 401 236 402 192
+    L 360 228
+    C 358 242 356 250 348 254
+    C 330 258 300 258 256 258
+    C 212 258 182 258 164 254
+    C 156 250 154 242 152 228
+    Z"/>
+
+  <!-- Three diamond dots of "پ" (inverted triangle, tucked under the bowl) -->
+  <path fill="#ffffff" d="M 222 352 L 254 384 L 222 416 L 190 384 Z"/>
+  <path fill="#ffffff" d="M 290 352 L 322 384 L 290 416 L 258 384 Z"/>
+  <path fill="#ffffff" d="M 256 418 L 288 450 L 256 482 L 224 450 Z"/>
+
+  <!-- Four-point sparkle, top-right (brand cue: 'typography fix') -->
+  <path fill="#ffffff" opacity="0.95" d="
+    M 404 64
+    C 409 87 417 95 440 100
+    C 417 105 409 113 404 136
+    C 399 113 391 105 368 100
+    C 391 95 399 87 404 64
+    Z"/>
+</svg>
